@@ -1,0 +1,17 @@
+- name: Install NodeJS
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: nodejs
+
+- name: Install MongoDB Client
+  ansible.builtin.dnf:
+    name: mongodb-mongosh
+    state: present
+
+- name: Install MongoDB Schema
+  ansible.builtin.shell: mongosh --host mongodb-dev.vdevops.online </app/db/master-data.js
+
+- name: Run systemd service
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: systemd_setup

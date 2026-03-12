@@ -1,0 +1,17 @@
+- name: Install Python Packages
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+    loop:
+      - python3
+      - gcc
+      - python3-devel
+
+- name: Load Pre App Setup Prerequisites
+  ansible.builtin.include_tasks:
+    name: app_pre_setup.yml
+
+- Name: Install Dependency Files
+  ansible.builtin.shell: pip3 install -r requirements.txt
+  args:
+    chdir: /app

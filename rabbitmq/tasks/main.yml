@@ -1,0 +1,22 @@
+- name: Install RabbitMQ
+  ansible.builtin.dnf:
+    name: rabbitmq-server
+    state: present
+
+- name: Start RabbitMQ Service
+  ansible.builtin.systemd_service:
+    name: rabbitmq-server
+    state: started
+    enabled: true
+
+- name: Add Application User and Assign Permissions
+  community.rabbitmq.rabbitmq_user:
+    user: roboshop
+    password: roboshop123
+    permissions:
+      - vhost: /
+        configure_priv: .*
+        read_priv: .*
+        write_priv: .*
+    state: present
+

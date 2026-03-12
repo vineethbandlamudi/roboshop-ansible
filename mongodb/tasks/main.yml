@@ -10,8 +10,8 @@
 
 - name: Update Listen address
   ansible.builtin.replace:
-    path: /etc/myapp/app.conf
-    regexp: '127\.0\.0\.1'
+    path: /etc/mongod.conf
+    regexp: '127.0.0.1'
     replace: '0.0.0.0'
 
 - name: Start MongoDB Service
