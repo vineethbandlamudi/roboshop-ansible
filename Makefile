@@ -1,6 +1,6 @@
 default:
     git pull
-    ansible-playbook -i $(componet_name)-dev.vdevops.online -e ansible_username=azuser -e ansible_password=DevOps@123456 -e component_name=$(component_name) roboshop.yml
+    ansible-playbook -i $(component_name)-dev.vdevops.io -e ansible_username=azuser -e ansible_password=DevOps@123456 -e component_name=$(component_name) roboshop.yml
 
 all:
     git pull
