@@ -13,4 +13,4 @@ all:
     make component_name=user
     make component_name=cart
     make component_name=shipping
-    make component_name=payment
+    make component_name=  payment
