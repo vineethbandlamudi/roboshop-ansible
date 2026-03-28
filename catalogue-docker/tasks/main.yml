@@ -1,0 +1,26 @@
+- name: Setup Docker
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: docker
+
+- name: Run catalogue container
+  community.docker.docker_container:
+    name: catalogue
+    image: public.ecr.aws/w8x4g9h7/roboshop-v3/catalogue
+    state: started
+    ports:
+      - "8080:8080"
+    env:
+      MONGO_URL: "mongodb://mongodb-dev.vdevops.io:27017/catalogue"
+      MONGO: "true"
+
+- name: Run catalogue schema container
+  community.docker.docker_container:
+    name: catalogue-schema
+    image: public.ecr.aws/w8x4g9h7/roboshop-v3/schema-load
+    state: started
+    env:
+      DB_TYPE: "mongo"
+      APP_GIT_URL: "https://github.com/roboshop-devops-project-v3/catalogue"
+      DB_HOST: "mongodb://mongodb-dev.vdevops.io:27017/catalogue"
+      SCHEMA_FILE: "db/master-data.js"

@@ -1,0 +1,16 @@
+- name: Setup Docker
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: docker
+
+- name: Run cart container
+  community.docker.docker_container:
+    name: cart
+    image: public.ecr.aws/w8x4g9h7/roboshop-v3/cart
+    state: started
+    ports:
+      - "8080:8080"
+    env:
+      CATALOGUE_HOST: "catalogue-dev.vdevops.io"
+      CATALOGUE_PORT: "8080"
+      REDIS_HOST: "redis-dev.vdevops.io"

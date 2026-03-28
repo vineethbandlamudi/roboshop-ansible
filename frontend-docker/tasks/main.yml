@@ -1,0 +1,23 @@
+- name: Setup Docker
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: docker
+
+- name: Run frontend container
+  community.docker.docker_container:
+    name: frontend
+    image: public.ecr.aws/w8x4g9h7/roboshop-v3/frontend
+    state: started
+    ports:
+      - "80:80"
+    env:
+      CATALOGUE_HOST: "http://catalogue-dev.vdevops.io:8080/"
+      CATALOGUE_PORT: 8080
+      USER_HOST: "http://user-dev.vdevops.io:8080/"
+      USER_PORT: 8080
+      CART_HOST: "http://cart-dev.vdevops.io:8080/"
+      CART_PORT: 8080
+      SHIPPING_HOST: "http://shipping-dev.vdevops.io:8080/"
+      SHIPPING_PORT: 8080
+      PAYMENT_HOST: "http://payment-dev.vdevops.io:8080/"
+      PAYMENT_PORT: 8080

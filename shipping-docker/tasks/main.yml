@@ -1,0 +1,33 @@
+- name: Setup Docker
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: docker
+
+- name: Run shipping container
+  community.docker.docker_container:
+    name: shipping
+    image: public.ecr.aws/w8x4g9h7/roboshop-v3/shipping
+    state: started
+    ports:
+      - "8080:8080"
+    env:
+      CART_ENDPOINT: "cart-dev.vdevops.io:8080"
+      DB_HOST: "mysql-dev.vdevops.io"
+
+
+- name: Run shipping schema container
+  loop:
+    - app-user
+    - schema
+    - master-data
+  community.docker.docker_container:
+    name: shipping-schema-{{ item }}
+    image: public.ecr.aws/w8x4g9h7/roboshop-v3/schema-load
+    state: started
+    env:
+      APP_GIT_URL: "https://github.com/roboshop-devops-project-v3/shipping"
+      DB_TYPE: "mysql"
+      DB_HOST: "mysql-dev.vdevops.io"
+      DB_USER: "root"
+      DB_PASS: "RoboShop@1"
+      SCHEMA_FILE: db/{{ item }}.sql
